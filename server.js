@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyPraser = require('body-parser');
 
+const DataRouter=require('./routes/data');
 mongoose.connect('mongodb+srv://admin:admin@kurs.hwy4owx.mongodb.net/?retryWrites=true&w=majority');
 const db= mongoose.connection;
 
@@ -25,3 +26,5 @@ const PORT = process.env.port || 3000
 app.listen(PORT,()=>{
     console.log(`server running on port ${PORT}`)
 })
+
+app.use('/api/data',DataRouter)
