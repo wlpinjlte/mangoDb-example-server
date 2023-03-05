@@ -2,6 +2,7 @@ const Data= require('../models/Data');
 
 //showing data
 const index=(req,res,next)=>{
+    // console.log(Data.db)
     Data.find()
     .then(response=>{
         res.json({
@@ -17,7 +18,7 @@ const index=(req,res,next)=>{
 
 //show single object
 const show=(req,res,next)=>{
-    let todoIteamId=req.body.Id;
+    let todoIteamId=req.body.id;
     Data.findById(todoIteamId)
     .then(response=>{
         res.json({
@@ -33,10 +34,10 @@ const show=(req,res,next)=>{
 
 //adding object
 const store=(req,res,next)=>{
+    // console.log(req);
     let todoItem=new Data({
         text:req.body.text,
-        done:req.body.done,
-        id:req.body.id
+        done:req.body.done
     });
     todoItem.save()
     .then(resposne=>{
@@ -58,8 +59,7 @@ const update=(req,res,next)=>{
 
     let toDoIteamToUpadte={
         text:req.body.text,
-        done:req.body.done,
-        id:req.body.id
+        done:req.body.done
     };
 
     Data.findByIdAndUpdate(todoIteamId,{$set:toDoIteamToUpadte})

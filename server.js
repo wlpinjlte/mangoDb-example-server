@@ -4,15 +4,19 @@ const morgan = require('morgan');
 const bodyPraser = require('body-parser');
 
 const DataRouter=require('./routes/data');
-mongoose.connect('mongodb+srv://admin:admin@kurs.hwy4owx.mongodb.net/?retryWrites=true&w=majority');
-const db= mongoose.connection;
-
+mongoose.connect('mongodb+srv://admin:admin@kurs.hwy4owx.mongodb.net/example_server?retryWrites=true&w=majority',{//adding to url our database name
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+// console.log(mongoose.connection);
+const db=mongoose.connection;
 db.on('error',(err)=>{
     console.log(err);
 })
 
 db.once('open',()=>{
     console.log("connect dataBase");
+    // console.log(db);
 })
 
 const app=express()
