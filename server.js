@@ -24,6 +24,7 @@ const app=express()
 app.use(morgan('dev'));
 app.use(bodyPraser.urlencoded({extended:true}));
 app.use(bodyPraser.json())
+app.use('/uploads',express.static('uploads'));
 
 const PORT = process.env.port || 3000
 

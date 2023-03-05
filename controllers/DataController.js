@@ -39,6 +39,9 @@ const store=(req,res,next)=>{
         text:req.body.text,
         done:req.body.done
     });
+    if(req.file){
+        todoItem.photo=req.file.path
+    }
     todoItem.save()
     .then(resposne=>{
         res.json({
