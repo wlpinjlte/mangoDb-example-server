@@ -39,8 +39,13 @@ const store=(req,res,next)=>{
         text:req.body.text,
         done:req.body.done
     });
-    if(req.file){
-        todoItem.photo=req.file.path
+    if(req.files){
+        let path=''
+        req.files.forEach((files,index,arr)=>{
+            path+=files.path+',';
+        })
+        path=path.substring(0,path.lastIndexOf(","));
+        todoItem.photo = path
     }
     todoItem.save()
     .then(resposne=>{
