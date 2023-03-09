@@ -58,8 +58,8 @@ const login=(req,res,next)=>{
                     })
                 }
                 if(result){
-                    let token=jwt.sign({name:user.name},"secretVaule",{expiresIn:'1h'});
-                    let refreshToken=jwt.sign({name:user.name},"refreshSecretVaule",{expiresIn:'10h'});
+                    let token=jwt.sign({name:user.name},process.env.ACCESS_TOKEN_SECRET,{expiresIn:process.env.ACCESS_TOKEN_EXPIRED_TIME});
+                    let refreshToken=jwt.sign({name:user.name},process.env.REFRESH_TOKEN_SECRET,{expiresIn:process.env.REFRESH_TOKEN_EXPIRED_TIME});
                     res.json({
                         message:"login successful",
                         token:token,
@@ -85,14 +85,14 @@ const login=(req,res,next)=>{
 
 const refreshToken=(req,res,next)=>{
     const refreshToken= req.body.refreshToken;
-    jwt.verify(refreshToken,"refreshSecretVaule",(err,decode)=>{
+    jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(err,decode)=>{
         if(err){
             res.status(404),json({
                 err
             })
         }else{
-            let token = jwt.sign({name:decode.name},"secretVaule",{expiresIn:"1h"});
-            let refreshToken=jwt.sign({name:decode.name},"refreshSecretVaule",{expiresIn:'10h'});
+            let token = jwt.sign({name:decode.name},process.env.ACCESS_TOKEN_SECRET,{expiresIn:process.env.ACCESS_TOKEN_EXPIRED_TIME});
+            let refreshToken=jwt.sign({name:decode.name},process.env.REFRESH_TOKEN_SECRET,{expiresIn:process.env.REFRESH_TOKEN_EXPIRED_TIME});
             res.status(200).json({
                 message:"token refresh successfully!",
                 token:token,

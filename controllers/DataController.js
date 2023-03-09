@@ -2,18 +2,32 @@ const Data= require('../models/Data');
 
 //showing data
 const index=(req,res,next)=>{
-    // console.log(Data.db)
-    Data.find()
-    .then(response=>{
-        res.json({
-            response
+    if(req.query.page&&req.query.limit){
+        Data.paginate({},{page:req.query.page,limit:req.query.limit})
+        .then(response=>{
+            res.json({
+                response
+            })
         })
-    })
-    .catch(err=>{
-        res.json({
-            message: 'Error!'
+        .catch(err=>{
+            res.json({
+                message:"error:"+err
+            })
         })
-    })
+        
+    }else{
+        Data.find()
+        .then(response=>{
+            res.json({
+                response
+            })
+        })
+        .catch(err=>{
+            res.json({
+                message: 'Error!'
+            })
+        })
+    }   
 }
 
 //show single object

@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const bodyPraser = require('body-parser');
 const cors=require("cors");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 const DataRouter=require('./routes/data');
 const AuthRouter=require('./routes/auth');
 
