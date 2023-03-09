@@ -9,9 +9,16 @@ const authenticate = (req,res,next)=>{
         req.user=decode;
         next();
     }catch(error){
-        res.json({
-            message:"Auth failed!"
-        });
+        if(error.name=='TokenExpiredError'){
+            res.status(401).json({
+                message:"token expired!"
+            })
+        }else{
+            res.json({
+                message:"Auth failed!"
+            });
+        }
+        
     }
 }
 

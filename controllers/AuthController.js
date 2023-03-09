@@ -45,7 +45,7 @@ const register=(req,res,next)=>{
 const login=(req,res,next)=>{
     let userName=req.body.userName
     let password=req.body.password
-    console.log(userName,password);
+    // console.log(userName,password);
     User.findOne({$or:[{email:userName},{phone:userName}]})
     .then(user=>{
         console.log(user)
@@ -58,10 +58,12 @@ const login=(req,res,next)=>{
                     })
                 }
                 if(result){
-                    let token=jwt.sign({name:user.name},"secretVaule",{expiresIn:'1h'})
+                    let token=jwt.sign({name:user.name},"secretVaule",{expiresIn:'1h'});
+                    let refreshToken=jwt.sign({name:user.name},"refreshSecretVaule",{expiresIn:'10h'});
                     res.json({
                         message:"login successful",
-                        token:token
+                        token:token,
+                        refreshToken:refreshToken
                     })
                 }else{
                     res.json({
@@ -80,4 +82,23 @@ const login=(req,res,next)=>{
         })
     })
 }
-module.exports={register,login};
+
+const refreshToken=(req,res,next)=>{
+    const refreshToken= req.body.refreshToken;
+    jwt.verify(refreshToken,"refreshSecretVaule",(err,decode)=>{
+        if(err){
+            res.status(404),json({
+                err
+            })
+        }else{
+            let token = jwt.sign({name:decode.name},"secretVaule",{expiresIn:"1h"});
+            let refreshToken=jwt.sign({name:decode.name},"refreshSecretVaule",{expiresIn:'10h'});
+            res.status(200).json({
+                message:"token refresh successfully!",
+                token:token,
+                refreshToken:refreshToken
+            });
+        }
+    })
+}
+module.exports={register,login,refreshToken};
